@@ -1,3 +1,5 @@
-!**/__pycache__/
-!**/migrations/
+**/migrations
+*.DS_Store
+**/__pycache__
+**/.DS_Store
 db.sqlite3
