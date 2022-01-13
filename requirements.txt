@@ -1,0 +1,2 @@
+virtualenv==20.8.1
+Django==3.2.7
