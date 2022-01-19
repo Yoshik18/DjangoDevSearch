@@ -7,7 +7,10 @@ urlpatterns = [
     path('register', views.registerUser, name="register"),
     path('logout', views.logoutUser, name="logout"),
 
+    path('account', views.account, name="account"),
+    path('editAccount', views.editAccount, name="editAccount"),
+
 
     path('', views.profiles, name="profiles"),
-    path('profile/<str:pk>', views.userProfile, name="user-profile")
+    path('profile/<str:pk>', views.userProfile, name="user-profile"),
 ]
