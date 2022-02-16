@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Skill
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CustomUserCreationForm
 from .forms import ProfileForm, SkillForm
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 
 # Create your views here.
+
+
 def loginUser(request):
     page = 'login'
 
@@ -64,8 +66,18 @@ def registerUser(request):
 
 
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {'profiles': profiles}
+    q = ''
+
+    if request.GET.get('q'):
+        q = request.GET.get('q')
+
+    skills = Skill.objects.filter(name__icontains=q)
+
+    profiles = Profile.objects.distinct().filter(
+        Q(name__icontains=q) | Q(short_intro__icontains=q) | Q(skill__in=skills))
+
+    # profiles = Profile.objects.all()
+    context = {'profiles': profiles, 'q': q}
     return render(request, 'users/profiles.html', context)
 
 
