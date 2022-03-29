@@ -3,6 +3,7 @@ from .models import Project, Tag
 from .forms import ProjectForm, ReviewForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # Create your views here.
 
 
@@ -31,6 +32,11 @@ def project(request, pk):
         review.project = projectObj
         review.owner = request.user.profile
         review.save()
+
+        projectObj.getVoteCount
+
+        messages.success(request, 'Your review was successfully submitted.')
+        return redirect('project', pk=projectObj.id)
 
     context = {'projectObj': projectObj, 'form': form}
     return render(request, 'projects/single-project.html', context)

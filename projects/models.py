@@ -20,8 +20,27 @@ class Project(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
+    class Meta:
+        ordering = ['-vote_ratio', '-vote_total', 'title']
+
     def __str__(self):
         return self.title
+
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes = reviews.count()
+
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
+
+    @property
+    def reviewers(self):
+        queryset = self.review_set.all().values_list('owner_id', flat=True)
+        return queryset
 
 
 class Review(models.Model):
